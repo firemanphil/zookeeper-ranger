@@ -64,7 +64,7 @@
 .tree li:last-child::before {
     height:26px
 }
-.tree li.parent_li>span.text:hover, .tree li.parent_li>span.text:hover+ul li span.text {
+.tree li.parent_li>span.hovered {
     background: #787878;
     border:1px solid #94a0b4;
     color:white;
