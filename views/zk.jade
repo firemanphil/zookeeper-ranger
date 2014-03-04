@@ -1,26 +1,21 @@
 extends layout
-mixin nodeWithChildren(title, obj)
+mixin nodeWithChildren(title, data, obj)
     li
         span(class="title text")
             i(class="glyphicon glyphicon-plus")
             | #{title}
         span(class="line")
         span(class="data text", style="display: none")
+            - if(!data)
+            -   data=""
             i(class="glyphicon glyphicon-file")
-            - if(!obj.data)
-            -   obj.data=""
             | #{obj.data}
         - console.log("OBJ: "+JSON.stringify(obj))
         - if (obj.children && obj.children.length != 0)
         ul
-            - if(obj.data && obj.data != "")
-                li
-                    span(class="data")
-                        i(class="glyphicon glyphicon-file")
-                        | #{obj.data}
             - each child in obj.children
                 - console.log("considering child "+ JSON.stringify(child))
-                    mixin nodeWithChildren(child.path,child)
+                    mixin nodeWithChildren(child.path,child.data, child)
 
 block content
   div(class="page-header")
@@ -29,7 +24,7 @@ block content
   h2 All nodes
   #container.tree
     ul
-        +nodeWithChildren('ROOT', allData)
+        +nodeWithChildren('ROOT', '',allData)
 
 
 
