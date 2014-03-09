@@ -2,6 +2,12 @@ var currentlyOpen;
 function showSubTree(parent, children, dontAnimate) {
     var childrenSpan = $(this).parent().children("span");
     var totalLength = $(this).parent().width();
+    var leftHeight = ($(this).siblings('ul').children().size()+1)*38;
+    var rightHeight = $(this).siblings(".data").innerHeight();
+    parent.height(Math.max(leftHeight, rightHeight));
+    $(this).siblings('ul').css("position","absolute");
+
+    $(this).siblings('ul').css("top",38 +"px");
     var toFill = totalLength;
     for (var i = 0; i < childrenSpan.length; i++) {
         if(!$(childrenSpan[i]).hasClass("line")){
@@ -17,6 +23,7 @@ function showSubTree(parent, children, dontAnimate) {
     parent.addClass("open");
 
     children.show('fast');
+
     $(this).attr('title', 'Collapse this branch').find('> i').addClass('glyphicon-minus').removeClass('glyphicon-plus');
 }
 function hideSubTree(parent, children, possibleChild) {
@@ -24,6 +31,7 @@ function hideSubTree(parent, children, possibleChild) {
     for (var i = 0; i < childrenSpan.length; i++) {
         $(childrenSpan[i]).hide();
     }
+    parent.css("height","");
     $(this).siblings(".line").width("0px");
     parent.removeClass("open");
     parent.next().removeClass("after-open");
