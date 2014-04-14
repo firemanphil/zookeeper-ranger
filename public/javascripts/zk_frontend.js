@@ -2,12 +2,18 @@ var currentlyOpen;
 function showSubTree(parent, children, dontAnimate) {
     var childrenSpan = $(this).parent().children("span");
     var totalLength = $(this).parent().width();
-    var leftHeight = ($(this).siblings('ul').children().size()+1)*38;
-    var rightHeight = $(this).siblings(".data").innerHeight();
-    parent.height(Math.max(leftHeight, rightHeight));
-    $(this).siblings('ul').css("position","absolute");
+    var nodeChildrenSize = $(this).siblings('ul').children().size();
+    if(nodeChildrenSize> 0){
+        var leftHeight = (nodeChildrenSize+1)*38;
+        parent.height(leftHeight);
+    } else {
+        parent.height(28);
+    }
 
-    $(this).siblings('ul').css("top",38 +"px");
+    var rightHeight = $(this).siblings(".data").height();
+    $(this).siblings('ul').css("position","relative");
+
+    $(this).siblings('ul').css("top", +(20-rightHeight)+"px");
     var toFill = totalLength;
     for (var i = 0; i < childrenSpan.length; i++) {
         if(!$(childrenSpan[i]).hasClass("line")){
@@ -69,8 +75,10 @@ $(function () {
                 var currOpenParent = $(currentlyOpen).parent('li.parent_li');
                 hideSubTree.call(currentlyOpen, currOpenParent, currOpenParent.find(' > ul > li'),this);
             }
-            showSubTree.call(this, parent, children);
-            currentlyOpen = this;
+            if(this !== currentlyOpen) {
+                showSubTree.call(this, parent, children);
+                currentlyOpen = this;
+            }
         }
         e.stopPropagation();
     });

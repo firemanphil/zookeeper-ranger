@@ -34,7 +34,7 @@
     position:absolute;
     right:auto
 }
-ul {
+.parent-li ul {
     width: 100%;
 }
 

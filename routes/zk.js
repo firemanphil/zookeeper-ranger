@@ -12,11 +12,9 @@ exports.get = function(req, res){
     if(/\/$/.test(path)&& path!=='/') path = path.substr(0, path.length-1);
     getNodeRecursive(zkCtxt, '/', function(dataRec){
 
-        getValidOptions(zkCtxt, function(validOpts){
            getNodeAndChildren(zkCtxt, path, function(data, children){
-               res.render('zk', { title: 'Ranger', validOpts: validOpts, data: data, children: children, allData: dataRec});
+               res.render('zk', { title: 'Ranger', data: data, children: children, allData: dataRec});
            })
-        });
         console.log("DATA %j", dataRec);
     });
 
