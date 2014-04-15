@@ -41,9 +41,16 @@ function hideSubTree(parent, children, possibleChild) {
     $(this).siblings(".line").width("0px");
     parent.removeClass("open");
     parent.next().removeClass("after-open");
-    if(!possibleChild || parent.has(possibleChild).length==0){
+    if(!possibleChild || parent.has(possibleChild).length==0 ){
         children.hide('fast');
         $(this).attr('title', 'Expand this branch').find('> i').addClass('glyphicon-plus').removeClass('glyphicon-minus');
+    }
+    var parents = $(parent).parent().closest('.parent_li');
+    if(parents.length > 0){
+        currentlyOpen = $(parents[0]).children('span.title');
+    } else {
+        // we are at the top
+        currentlyOpen = undefined;
     }
 }
 function nodeHover(){
@@ -71,11 +78,16 @@ $(function () {
 
             hideSubTree.call(this, parent, children);
         } else {
-            if(currentlyOpen){
-                var currOpenParent = $(currentlyOpen).parent('li.parent_li');
-                hideSubTree.call(currentlyOpen, currOpenParent, currOpenParent.find(' > ul > li'),this);
+            var oldCurrentlyOpen = currentlyOpen;
+            if(oldCurrentlyOpen){
+                var currOpenParent = $(oldCurrentlyOpen).parent('li.parent_li');
+                if(this===oldCurrentlyOpen){
+                    hideSubTree.call(oldCurrentlyOpen, currOpenParent, currOpenParent.find(' > ul > li'));
+                } else {
+                    hideSubTree.call(oldCurrentlyOpen, currOpenParent, currOpenParent.find(' > ul > li'), this);
+                }
             }
-            if(this !== currentlyOpen) {
+            if(this !== oldCurrentlyOpen) {
                 showSubTree.call(this, parent, children);
                 currentlyOpen = this;
             }
