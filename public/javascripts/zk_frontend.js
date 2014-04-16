@@ -1,4 +1,3 @@
-var currentlyOpen;
 function showSubTree(parent, children, dontAnimate) {
     var childrenSpan = $(this).parent().children("span");
     var totalLength = $(this).parent().width();
@@ -46,12 +45,7 @@ function hideSubTree(parent, children, possibleChild) {
         $(this).attr('title', 'Expand this branch').find('> i').addClass('glyphicon-plus').removeClass('glyphicon-minus');
     }
     var parents = $(parent).parent().closest('.parent_li');
-    if(parents.length > 0){
-        currentlyOpen = $(parents[0]).children('span.title');
-    } else {
-        // we are at the top
-        currentlyOpen = undefined;
-    }
+
 }
 function nodeHover(){
     var parent = $(this).parent('li.parent_li');
@@ -65,9 +59,12 @@ function nodeHoverOut(){
 }
 
 function resizeViewport() {
-    var parent = $(currentlyOpen).parent('li.parent_li');
-    var children = parent.find(' > ul > li');
-    showSubTree.call(currentlyOpen, parent, children, true);
+    currentlyOpens = $('.tree li.parent_li > span');
+    for(var currentlyOpen in currentlyOpens) {
+        var parent = $(currentlyOpen).parent('li.parent_li');
+        var children = parent.find(' > ul > li');
+        showSubTree.call(currentlyOpen, parent, children, true);
+    }
 }
 $(function () {
     $('.tree li:has(ul)').addClass('parent_li').find('> span').attr('title', 'Collapse this branch');
@@ -78,18 +75,10 @@ $(function () {
 
             hideSubTree.call(this, parent, children);
         } else {
-            var oldCurrentlyOpen = currentlyOpen;
-            if(oldCurrentlyOpen){
-                var currOpenParent = $(oldCurrentlyOpen).parent('li.parent_li');
-                if(this===oldCurrentlyOpen){
-                    hideSubTree.call(oldCurrentlyOpen, currOpenParent, currOpenParent.find(' > ul > li'));
-                } else {
-                    hideSubTree.call(oldCurrentlyOpen, currOpenParent, currOpenParent.find(' > ul > li'), this);
-                }
-            }
-            if(this !== oldCurrentlyOpen) {
+            if($(parent).hasClass('open')){
+                hideSubTree.call(this, parent, children);
+            } else {
                 showSubTree.call(this, parent, children);
-                currentlyOpen = this;
             }
         }
         e.stopPropagation();
