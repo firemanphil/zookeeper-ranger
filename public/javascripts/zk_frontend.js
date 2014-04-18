@@ -36,10 +36,15 @@ function hideSubTree(parent, children, possibleChild) {
     for (var i = 0; i < childrenSpan.length; i++) {
         $(childrenSpan[i]).hide();
     }
-    parent.css("height","");
+    var openChildren = $(children).filter(".open");
+    for(var i = 0; i< openChildren.length; i++){
+        var toClose = $(openChildren[i]).children("span.title");
+        hideSubTree.call(toClose,openChildren[i],$(openChildren[i]).find(' > ul > li'));
+    }
+    $(parent).css("height","");
     $(this).siblings(".line").width("0px");
-    parent.removeClass("open");
-    parent.next().removeClass("after-open");
+    $(parent).removeClass("open");
+    $(parent).next().removeClass("after-open");
     if(!possibleChild || parent.has(possibleChild).length==0 ){
         children.hide('fast');
         $(this).attr('title', 'Expand this branch').find('> i').addClass('glyphicon-plus').removeClass('glyphicon-minus');
