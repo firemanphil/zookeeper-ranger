@@ -2,15 +2,17 @@ extends layout
 mixin nodeWithChildren(title, data, obj)
     li
         span(class="title text")
-            i(class="glyphicon glyphicon-plus")
+            - var hasDataOrChildren =  (obj.children && obj.children.length != 0) || (obj.data.length != 0)
+           i(class=hasDataOrChildren?"glyphicon glyphicon-plus":"glyphicon glyphicon-pencil")
             | #{title}
+
+
         span(class="line")
         span(class="data text", style="display: none")
             - if(!data)
             -   data=""
             i(class="glyphicon glyphicon-file")
             | #{obj.data}
-        - console.log("OBJ: "+JSON.stringify(obj))
         - if (obj.children && obj.children.length != 0)
         ul
             - each child in obj.children

@@ -13,9 +13,10 @@ exports.get = function(req, res){
     getNodeRecursive(zkCtxt, '/', function(dataRec){
 
            getNodeAndChildren(zkCtxt, path, function(data, children){
+               console.log("TYPEOF DATA "+ data);
                res.render('zk', { title: 'Ranger', data: data, children: children, allData: dataRec});
            })
-        console.log("DATA %j", dataRec);
+
     });
 
 
