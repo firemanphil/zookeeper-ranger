@@ -3,7 +3,7 @@ mixin nodeWithChildren(title, data, obj)
     li
         span(class="title text")
             - var hasDataOrChildren =  (obj.children && obj.children.length != 0) || (obj.data.length != 0)
-           i(class=hasDataOrChildren?"glyphicon glyphicon-plus":"glyphicon glyphicon-pencil")
+            i(class=hasDataOrChildren?"glyphicon glyphicon-plus":"glyphicon glyphicon-pencil")
             | #{title}
 
 
@@ -18,6 +18,10 @@ mixin nodeWithChildren(title, data, obj)
             - each child in obj.children
                 - console.log("considering child "+ JSON.stringify(child))
                     mixin nodeWithChildren(child.path,child.data, child)
+            li
+                span(class="title text")
+                    i(class="glyphicon glyphicon-plus")
+                    | #{'Add another node'}
 
 block content
   div(class="page-header")
