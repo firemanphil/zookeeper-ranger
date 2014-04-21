@@ -51,6 +51,14 @@
     top:25px;
     width:25px
 }
+
+.tree li.extra_node::before {
+    border-left:1px dashed #999;
+}
+
+.tree li.extra_node::after {
+    border-top:1px dashed #999;
+}
 .tree li span.text {
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
@@ -61,6 +69,10 @@
     text-decoration:none;
     font-weight: bold;
     color:black;
+}
+
+.tree li.extra_node span.text {
+    border:1px dashed #999;
 }
 .tree li.parent_li>span.text {
     cursor:pointer

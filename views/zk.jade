@@ -18,7 +18,7 @@ mixin nodeWithChildren(title, data, obj)
             - each child in obj.children
                 - console.log("considering child "+ JSON.stringify(child))
                     mixin nodeWithChildren(child.path,child.data, child)
-            li
+            li(class="extra_node")
                 span(class="title text")
                     i(class="glyphicon glyphicon-plus")
                     | #{'Add another node'}
