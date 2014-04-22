@@ -72,7 +72,7 @@ function resizeViewport() {
     }
 }
 $(function () {
-    $('.tree li:has(ul)').addClass('parent_li').find('> span').attr('title', 'Collapse this branch');
+    $('.tree li').addClass('parent_li').find('> span').attr('title', 'Collapse this branch');
     $('.tree li.parent_li > span').on('click', function (e) {
         var parent = $(this).parent('li.parent_li');
         var children = parent.find(' > ul > li');
