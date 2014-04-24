@@ -2,12 +2,20 @@ function showSubTree(parent, children, dontAnimate) {
     var childrenSpan = $(this).parent().children("span");
     var totalLength = $(this).parent().width();
     var nodeChildrenSize = $(this).siblings('ul').children().size();
+    var heightDiff;
+    var heightBefore = parent.height();
     if(nodeChildrenSize> 0){
         var leftHeight = (nodeChildrenSize+1)*38;
         parent.height(leftHeight);
+        heightDiff = leftHeight-heightBefore;
     } else {
         parent.height(28);
+        heightDiff = 28 -heightBefore;
     }
+
+    ($(parent).parents("li.parent_li")).each(function(index, grandParent){
+        $(grandParent).height($(grandParent).height()+heightDiff);
+    });
 
     var rightHeight = $(this).siblings(".data").height();
     $(this).siblings('ul').css("position","relative");
