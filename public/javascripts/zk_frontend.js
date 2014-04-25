@@ -40,6 +40,8 @@ function showSubTree(parent, children, dontAnimate) {
     $(this).attr('title', 'Collapse this branch').find('> i').addClass('glyphicon-minus').removeClass('glyphicon-plus');
 }
 function hideSubTree(parent, children, possibleChild) {
+    var heightBefore = $(parent).height();
+
     var childrenSpan = $(this).siblings("span");
     for (var i = 0; i < childrenSpan.length; i++) {
         $(childrenSpan[i]).hide();
@@ -49,15 +51,21 @@ function hideSubTree(parent, children, possibleChild) {
         var toClose = $(openChildren[i]).children("span.title");
         hideSubTree.call(toClose,openChildren[i],$(openChildren[i]).find(' > ul > li'));
     }
+
     $(parent).css("height","");
     $(this).siblings(".line").width("0px");
     $(parent).removeClass("open");
     $(parent).next().removeClass("after-open");
     if(!possibleChild || parent.has(possibleChild).length==0 ){
-        children.hide('fast');
+        children.hide('fast', function(){
+            var heightDiff = heightBefore - $(parent).height();
+            ($(parent).parents("li.parent_li")).each(function(index, grandParent){
+                $(grandParent).height($(grandParent).height()-heightDiff);
+            });
+        });
         $(this).attr('title', 'Expand this branch').find('> i').addClass('glyphicon-plus').removeClass('glyphicon-minus');
     }
-    var parents = $(parent).parent().closest('.parent_li');
+
 
 }
 function nodeHover(){
