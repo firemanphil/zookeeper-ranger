@@ -3,7 +3,7 @@ mixin nodeWithChildren(title, data, obj)
     li
         span(class="title text")
             - var hasDataOrChildren =  (obj.children && obj.children.length != 0) || (obj.data.length != 0)
-            i(class=hasDataOrChildren?"glyphicon glyphicon-plus":"glyphicon glyphicon-pencil")
+            i(class="glyphicon glyphicon-plus")
             | #{title}
 
 
