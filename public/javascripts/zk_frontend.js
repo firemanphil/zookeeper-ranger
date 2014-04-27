@@ -39,9 +39,8 @@ function showSubTree(parent, children, dontAnimate) {
 
     $(this).attr('title', 'Collapse this branch').find('> i').addClass('glyphicon-minus').removeClass('glyphicon-plus');
 }
-function hideSubTree(parent, children, possibleChild) {
+function hideSubTree(parent, children, correctHeights, possibleChild) {
     var heightBefore = $(parent).height();
-
     var childrenSpan = $(this).siblings("span");
     for (var i = 0; i < childrenSpan.length; i++) {
         $(childrenSpan[i]).hide();
@@ -49,19 +48,25 @@ function hideSubTree(parent, children, possibleChild) {
     var openChildren = $(children).filter(".open");
     for(var i = 0; i< openChildren.length; i++){
         var toClose = $(openChildren[i]).children("span.title");
-        hideSubTree.call(toClose,openChildren[i],$(openChildren[i]).find(' > ul > li'));
+        hideSubTree.call(toClose,openChildren[i],$(openChildren[i]).find(' > ul > li'), false);
     }
 
     $(parent).css("height","");
-    $(this).siblings(".line").width("0px");
+    $(this).siblings(".line").stop().width("0px");
     $(parent).removeClass("open");
     $(parent).next().removeClass("after-open");
     if(!possibleChild || parent.has(possibleChild).length==0 ){
+        var childrenCount = children.length;
         children.hide('fast', function(){
-            var heightDiff = heightBefore - $(parent).height();
-            ($(parent).parents("li.parent_li")).each(function(index, grandParent){
-                $(grandParent).height($(grandParent).height()-heightDiff);
-            });
+            if(childrenCount==1) {
+                if (correctHeights) {
+                    var heightDiff = heightBefore - $(parent).height();
+                    ($(parent).parents("li.parent_li")).each(function (index, grandParent) {
+                        $(grandParent).height($(grandParent).height() - heightDiff);
+                    });
+                }
+            }
+            childrenCount --;
         });
         $(this).attr('title', 'Expand this branch').find('> i').addClass('glyphicon-plus').removeClass('glyphicon-minus');
     }
@@ -94,10 +99,10 @@ $(function () {
         var children = parent.find(' > ul > li');
         if (children.is(":visible")) {
 
-            hideSubTree.call(this, parent, children);
+            hideSubTree.call(this, parent, children, true);
         } else {
             if($(parent).hasClass('open')){
-                hideSubTree.call(this, parent, children);
+                hideSubTree.call(this, parent, children,true);
             } else {
                 showSubTree.call(this, parent, children);
             }
