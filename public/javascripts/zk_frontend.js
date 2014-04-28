@@ -93,6 +93,14 @@ function resizeViewport() {
     }
 }
 $(function () {
+    $('span.title.text').editable({
+        type: 'text',
+        title: 'Enter username',
+        success: function(response, newValue) {
+            console.log(newValue);
+            console.log(response);
+        }
+    });
     $('.tree li').addClass('parent_li').find('> span').attr('title', 'Collapse this branch');
     $('.tree li.parent_li > span.title').on('click', function (e) {
         var parent = $(this).parent('li.parent_li');
