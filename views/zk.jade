@@ -6,7 +6,8 @@ mixin nodeWithChildren(title, data, obj)
             i(class="glyphicon glyphicon-plus")
             | #{title}
 
-
+        span(class="title_edit_button")
+            i(class="glyphicon glyphicon-pencil")
         span(class="line")
         span(class="data text", style="display: none")
             - if(!data)

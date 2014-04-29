@@ -69,8 +69,24 @@
     text-decoration:none;
     font-weight: bold;
     color:black;
+    position:relative;
+    z-index: 2;
+    background-color: #fbfbfb;
 }
-
+.tree li span.title_edit_button {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border:1px solid #999;
+    border-radius:5px;
+    display:inline-block;
+    padding:3px 8px;
+    text-decoration:none;
+    font-weight: bold;
+    color:black;
+    position:relative;
+    z-index: 1;
+    margin-left: -5px;
+}
 .tree li.extra_node span.text {
     border:1px dashed #999;
 }
