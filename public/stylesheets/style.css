@@ -85,7 +85,7 @@
     color:black;
     position:relative;
     z-index: 1;
-    margin-left: -5px;
+    margin-left: -35px;
 }
 .tree li.extra_node span.text {
     border:1px dashed #999;

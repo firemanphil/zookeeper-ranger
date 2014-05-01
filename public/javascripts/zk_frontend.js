@@ -77,13 +77,14 @@ function nodeHover(){
     var parent = $(this).parent('li.parent_li');
     parent.children('span.data, span.title').addClass('hovered');
     parent.children('ul').find('li > span.title').addClass('hovered');
+    $(parent).children('span.title_edit_button').animate({"margin-left":"-5px"}, 100);
 }
-function nodeHoverOut(){
+function nodeHoverOut() {
     var parent = $(this).parent('li.parent_li');
     parent.children('span').removeClass('hovered');
     parent.children('ul').find('li > span.title').removeClass('hovered');
+    $(parent).children('span.title_edit_button').animate({"margin-left": "-35px"}, 100);
 }
-
 function resizeViewport() {
     currentlyOpens = $('.tree li.parent_li > span');
     for(var currentlyOpen in currentlyOpens) {
