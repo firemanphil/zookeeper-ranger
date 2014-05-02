@@ -73,17 +73,27 @@ function hideSubTree(parent, children, correctHeights, possibleChild) {
 
 
 }
-function nodeHover(){
+function nodeHover(args){
     var parent = $(this).parent('li.parent_li');
     parent.children('span.data, span.title').addClass('hovered');
     parent.children('ul').find('li > span.title').addClass('hovered');
     $(parent).children('span.title_edit_button').animate({"margin-left":"-5px"}, 100);
 }
-function nodeHoverOut() {
+function nodeHoverOut(args) {
     var parent = $(this).parent('li.parent_li');
     parent.children('span').removeClass('hovered');
     parent.children('ul').find('li > span.title').removeClass('hovered');
-    $(parent).children('span.title_edit_button').animate({"margin-left": "-35px"}, 100);
+    if(($(parent).find(args.relatedTarget).length==0 || !$(args.relatedTarget).is("span"))
+        || $(parent).is(args.relatedTarget)) {
+        $(parent).children('span.title_edit_button').animate({"margin-left": "-35px"}, 300);
+    }
+}
+function editHoverOut(args){
+    var parent = $(this).parent('li.parent_li');
+    if($(parent).find(args.relatedTarget).length==0){
+        $(parent).children('span.title_edit_button').animate({"margin-left": "-35px"}, 300);
+    }
+
 }
 function resizeViewport() {
     currentlyOpens = $('.tree li.parent_li > span');
@@ -121,4 +131,5 @@ $(function () {
     $('.tree li.parent_li > span').parent('li.parent_li').find('> ul > li').hide('fast');
     $(window).resize(resizeViewport);
     $('.tree li.parent_li > span.title').hover(nodeHover, nodeHoverOut);
+    $('.tree li.parent_li > span.title_edit_button').hover(function(){}, editHoverOut)
 });
