@@ -103,31 +103,37 @@ function resizeViewport() {
         showSubTree.call(currentlyOpen, parent, children, true);
     }
 }
-$(function () {
-    $('span.title.text').editable({
-        type: 'text',
-        title: 'Enter username',
-        success: function(response, newValue) {
-            console.log(newValue);
-            console.log(response);
-        }
-    });
-    $('.tree li').addClass('parent_li').find('> span').attr('title', 'Collapse this branch');
-    $('.tree li.parent_li > span.title').on('click', function (e) {
-        var parent = $(this).parent('li.parent_li');
-        var children = parent.find(' > ul > li');
-        if (children.is(":visible")) {
+function onNodeClick(e) {
+    var parent = $(this).parent('li.parent_li');
+    var children = parent.find(' > ul > li');
+    if (children.is(":visible")) {
 
+        hideSubTree.call(this, parent, children, true);
+    } else {
+        if ($(parent).hasClass('open')) {
             hideSubTree.call(this, parent, children, true);
         } else {
-            if($(parent).hasClass('open')){
-                hideSubTree.call(this, parent, children,true);
-            } else {
-                showSubTree.call(this, parent, children);
-            }
+            showSubTree.call(this, parent, children);
         }
-        e.stopPropagation();
+    }
+    e.stopPropagation();
+}
+function onEditClick(e) {
+    e.stopPropagation();
+    $(this).siblings('span.title').editable({
+        type: 'text',
+        url: '/post',
+        pk: 1,
+        placement: 'top',
+        title: 'Enter username'
     });
+    $($(this).siblings('span.title')[0]).editable('show');
+}
+$(function () {
+
+    $('.tree li').addClass('parent_li').find('> span').attr('title', 'Collapse this branch');
+    $('.tree li.parent_li > span.title').on('click', onNodeClick);
+    $('.tree li.parent_li > span.title_edit_button').on('click',onEditClick);
     $('.tree li.parent_li > span').parent('li.parent_li').find('> ul > li').hide('fast');
     $(window).resize(resizeViewport);
     $('.tree li.parent_li > span.title').hover(nodeHover, nodeHoverOut);
