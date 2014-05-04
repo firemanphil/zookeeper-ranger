@@ -122,11 +122,10 @@ function onEditClick(e) {
     e.stopPropagation();
     $(this).siblings('span.title').editable({
         type: 'text',
-        url: '/post',
-        pk: 1,
         placement: 'top',
         title: 'Enter username'
     });
+    $(this).siblings('span.title').attr('title','Enter node name');
     $($(this).siblings('span.title')[0]).editable('show');
 }
 $(function () {
