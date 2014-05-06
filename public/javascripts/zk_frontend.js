@@ -24,7 +24,7 @@ function showSubTree(parent, children, dontAnimate) {
     var toFill = totalLength;
     for (var i = 0; i < childrenSpan.length; i++) {
         if(!$(childrenSpan[i]).hasClass("line")){
-        toFill -= $(childrenSpan[i]).outerWidth();
+            toFill -= $(childrenSpan[i]).outerWidth();
         }
     }
     if(dontAnimate){
@@ -77,7 +77,14 @@ function nodeHover(args){
     var parent = $(this).parent('li.parent_li');
     parent.children('span.data, span.title').addClass('hovered');
     parent.children('ul').find('li > span.title').addClass('hovered');
-    $(parent).children('span.title_edit_button').animate({"margin-left":"-5px"}, 100);
+    var currentWidth = $(parent).children("span.line").data("oldWidth") || $(parent).children("span.line").width();
+    if(parent.children('span.data:visible').length != 0) {
+        var lineWidth = currentWidth - 30;
+        $(parent).children("span.line:visible").stop().animate({"width":lineWidth},{duration: 100, queue: false , complete:function(){
+            $(this).data("oldWidth", lineWidth);
+        }});
+    }
+    $(parent).children('span.title_edit_button').show().stop().animate({"margin-left": "-5px"}, { duration: 100, queue: false });
 }
 function nodeHoverOut(args) {
     var parent = $(this).parent('li.parent_li');
@@ -85,7 +92,14 @@ function nodeHoverOut(args) {
     parent.children('ul').find('li > span.title').removeClass('hovered');
     if(($(parent).find(args.relatedTarget).length==0 || !$(args.relatedTarget).is("span"))
         || $(parent).is(args.relatedTarget)) {
-        $(parent).children('span.title_edit_button').animate({"margin-left": "-35px"}, 300);
+        var currentWidth = $(parent).children("span.line").data("oldWidth") || $(parent).children("span.line").width();
+        if(parent.children('span.data:visible').length != 0) {
+            var lineWidth = currentWidth + 30;
+            $(parent).children("span.line:visible").stop().animate({"width": lineWidth}, {duration: 300, queue: false,complete:function(){
+                $(this).data("oldWidth", lineWidth);
+            }});
+        }
+        $(parent).children('span.title_edit_button').stop().animate({"margin-left": "-35px"}, { duration: 300, queue: false });
     }
 }
 function editHoverOut(args){
