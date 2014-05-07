@@ -27,6 +27,7 @@ function showSubTree(parent, children, dontAnimate) {
             toFill -= $(childrenSpan[i]).outerWidth();
         }
     }
+    $(this).siblings(".line").data("orig_width",toFill);
     if(dontAnimate){
         $(this).siblings(".line").width(toFill + "px");
     }else {
@@ -77,12 +78,9 @@ function nodeHover(args){
     var parent = $(this).parent('li.parent_li');
     parent.children('span.data, span.title').addClass('hovered');
     parent.children('ul').find('li > span.title').addClass('hovered');
-    var currentWidth = $(parent).children("span.line").data("oldWidth") || $(parent).children("span.line").width();
+    var old_width = $(parent).children("span.line").data("orig_width") || $(parent).children("span.line").width();
     if(parent.children('span.data:visible').length != 0) {
-        var lineWidth = currentWidth - 30;
-        $(parent).children("span.line:visible").stop().animate({"width":lineWidth},{duration: 100, queue: false , complete:function(){
-            $(this).data("oldWidth", lineWidth);
-        }});
+        $(parent).children("span.line:visible").stop().animate({"width":old_width},{duration: 100, queue: false});
     }
     $(parent).children('span.title_edit_button').show().stop().animate({"margin-left": "-5px"}, { duration: 100, queue: false });
 }
@@ -92,12 +90,10 @@ function nodeHoverOut(args) {
     parent.children('ul').find('li > span.title').removeClass('hovered');
     if(($(parent).find(args.relatedTarget).length==0 || !$(args.relatedTarget).is("span"))
         || $(parent).is(args.relatedTarget)) {
-        var currentWidth = $(parent).children("span.line").data("oldWidth") || $(parent).children("span.line").width();
+        var old_width = $(parent).children("span.line").data("orig_width");
         if(parent.children('span.data:visible').length != 0) {
-            var lineWidth = currentWidth + 30;
-            $(parent).children("span.line:visible").stop().animate({"width": lineWidth}, {duration: 300, queue: false,complete:function(){
-                $(this).data("oldWidth", lineWidth);
-            }});
+            var lineWidth = old_width + 30;
+            $(parent).children("span.line:visible").stop().animate({"width": lineWidth}, {duration: 300, queue: false});
         }
         $(parent).children('span.title_edit_button').stop().animate({"margin-left": "-35px"}, { duration: 300, queue: false });
     }
